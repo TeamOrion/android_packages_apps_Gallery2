@@ -26,13 +26,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.TwoLineListItem;
 
@@ -189,6 +189,7 @@ public class GalleryActionBar implements OnNavigationListener {
 
     public GalleryActionBar(AbstractGalleryActivity activity) {
         mActionBar = activity.getActionBar();
+        mActionBar.setElevation(0);
         mContext = activity.getAndroidContext();
         mActivity = activity;
         mInflater = ((Activity) mActivity).getLayoutInflater();
@@ -394,8 +395,6 @@ public class GalleryActionBar implements OnNavigationListener {
     }
 
     private Menu mActionBarMenu;
-    private ShareActionProvider mSharePanoramaActionProvider;
-    private ShareActionProvider mShareActionProvider;
     private Intent mSharePanoramaIntent;
     private Intent mShareIntent;
 
@@ -405,20 +404,32 @@ public class GalleryActionBar implements OnNavigationListener {
 
         MenuItem item = menu.findItem(R.id.action_share_panorama);
         if (item != null) {
-            mSharePanoramaActionProvider = (ShareActionProvider)
-                item.getActionProvider();
-            mSharePanoramaActionProvider
-                .setShareHistoryFileName("panorama_share_history.xml");
-            mSharePanoramaActionProvider.setShareIntent(mSharePanoramaIntent);
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (mSharePanoramaIntent != null) {
+                        Intent intent = Intent.createChooser(mSharePanoramaIntent, null);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(intent);
+                    }
+                    return true;
+                }
+            });
         }
 
         item = menu.findItem(R.id.action_share);
         if (item != null) {
-            mShareActionProvider = (ShareActionProvider)
-                item.getActionProvider();
-            mShareActionProvider
-                .setShareHistoryFileName("share_history.xml");
-            mShareActionProvider.setShareIntent(mShareIntent);
+            item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    if (mShareIntent != null) {
+                        Intent intent = Intent.createChooser(mShareIntent, null);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        mContext.startActivity(intent);
+                    }
+                    return true;
+                }
+            });
         }
     }
 
@@ -426,17 +437,17 @@ public class GalleryActionBar implements OnNavigationListener {
         return mActionBarMenu;
     }
 
-    public void setShareIntents(Intent sharePanoramaIntent, Intent shareIntent,
-        ShareActionProvider.OnShareTargetSelectedListener onShareListener) {
+    public void setShareIntents(Intent sharePanoramaIntent, Intent shareIntent) {
         mSharePanoramaIntent = sharePanoramaIntent;
-        if (mSharePanoramaActionProvider != null) {
-            mSharePanoramaActionProvider.setShareIntent(sharePanoramaIntent);
-        }
         mShareIntent = shareIntent;
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
-            mShareActionProvider.setOnShareTargetSelectedListener(
-                onShareListener);
+    }
+
+    public void setTransparentMode(boolean value) {
+        if (value) {
+            mActionBar.setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.root_top_bg));
+        } else {
+            mActionBar.setBackgroundDrawable(
+                    new ColorDrawable(mActivity.getResources().getColor(R.color.primary)));
         }
     }
 }

@@ -163,14 +163,12 @@
     <dimen name="photoeditor_original_text_size">18dp</dimen>
     <dimen name="photoeditor_original_text_margin">4dp</dimen>
 
-    <dimen name="action_bar_elevation">8dp</dimen>
-
     <!-- FAB -->
     <!-- Floating action button -->
     <dimen name="floating_action_button_height">56dp</dimen>
     <dimen name="floating_action_button_width">56dp</dimen>
     <dimen name="floating_action_button_radius">28dp</dimen>
-    <dimen name="floating_action_button_translation_z">5dp</dimen>	
+    <dimen name="floating_action_button_translation_z">5dp</dimen>
     <dimen name="floating_action_button_margin_left">5dp</dimen>
     <dimen name="floating_action_button_margin_right">5dp</dimen>
     <dimen name="floating_action_button_margin_bottom">16dp</dimen>
@@ -178,4 +176,7 @@
     <dimen name="elevation_high">4dp</dimen>
     <dimen name="add_button_margin">16dp</dimen>
 
+    <dimen name="alert_dialog_padding_material">24dp</dimen>
+    <dimen name="color_rect_width">32dp</dimen>
+    <dimen name="selected_frame_width">2dp</dimen>
 </resources>
